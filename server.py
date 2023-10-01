@@ -55,7 +55,7 @@ def purchasePlaces():
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
     if competition_date < datetime.now():
         flash('You cannot book places for past competitions.')
-        return render_template('welcome.html')
+        return render_template('welcome.html',club=club, competitions=competitions)
     
     # Check if the club is trying to book more than 12 places
     if placesRequired > 12:
