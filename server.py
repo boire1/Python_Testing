@@ -26,8 +26,12 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    club_list = [club for club in clubs if club['email'] == request.form['email']]
+    if not club_list:  # if the list is empty
+        flash("Sorry, that email wasn't found.")
+        return redirect(url_for('index'))
+    club = club_list[0]
+    return render_template('welcome.html', club=club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
@@ -40,7 +44,6 @@ def book(competition,club):
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
-
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
@@ -51,9 +54,13 @@ def purchasePlaces():
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
+
 # TODO: Add route for points display
 
 
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
