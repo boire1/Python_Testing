@@ -14,5 +14,19 @@
         <input type="number" name="places" id="" max="12" min="1">
         <button type="submit">Book</button>
     </form>
+
+    {% for comp in competitions %}
+    <li>
+        {{comp['name']}}<br />
+        Date: {{comp['date']}}</br>
+        Number of Places: {{comp['numberOfPlaces']}}
+        {% if comp['numberOfPlaces']|int > 0 and comp['date'] > (current_date|string) %}
+            <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}">Book Places</a>
+        {% endif %}
+    </li>
+    <hr />
+{% endfor %}
+
+
 </body>
 </html>
