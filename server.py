@@ -17,12 +17,19 @@ def loadCompetitions():
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
+def saveCompetitions():
+    with open('competitions.json', 'w') as f:
+        json.dump({"competitions": competitions}, f)
+
+
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
 competitions = loadCompetitions()
 clubs = loadClubs()
+
+
 
 @app.route('/')
 def index():
@@ -83,6 +90,8 @@ def purchasePlaces():
     
     # Save the updated club data to the JSON file
     saveClubs()
+    
+    
                 
     #competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     
