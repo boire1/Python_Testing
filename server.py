@@ -7,6 +7,10 @@ def loadClubs():
          listOfClubs = json.load(c)['clubs']
          return listOfClubs
 
+def saveClubs():
+    with open('clubs.json', 'w') as f:
+        json.dump({"clubs": clubs}, f)
+
 
 def loadCompetitions():
     with open('competitions.json') as comps:
