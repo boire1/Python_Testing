@@ -90,7 +90,7 @@ def purchasePlaces():
     
     # Save the updated club data to the JSON file
     saveClubs()
-    
+    saveCompetitions()
     
                 
     #competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
