@@ -80,6 +80,9 @@ def purchasePlaces():
     # Deduct the points and update the number of available places in the competition
     club['points'] = str(int(club['points']) - placesRequired)
     competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
+    
+    # Save the updated club data to the JSON file
+    saveClubs()
                 
     #competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     
