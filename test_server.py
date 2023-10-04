@@ -34,4 +34,29 @@ def test_loadCompetitions():
         assert "numberOfPlaces" in competition, f"Expected 'numberOfPlaces' in competition, got {competition}"
 
 
+import pytest
+from server import app, loadClubs
+from flask import url_for
+
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_showSummary_correct_email(client):
+    # Simulate a connection with a valid email
+    club_email = loadClubs()[0]['email']  # Utilisez le premier e-mail de club pour le test
+    response = client.post('/showSummary', data={'email': club_email})
+    assert response.status_code == 200
+    assert club_email in response.data.decode('utf-8')
+
+def test_showSummary_incorrect_email(client):
+    # Use the first club email for the test
+    wrong_email = "wrong@example.com"
+    response = client.post('/showSummary', data={'email': wrong_email})
+    assert response.status_code == 302
+    assert "Location" in response.headers
+    assert url_for('index') in response.headers["Location"]
+
 
