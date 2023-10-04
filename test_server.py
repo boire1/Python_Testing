@@ -52,7 +52,7 @@ def test_showSummary_correct_email(client):
     assert club_email in response.data.decode('utf-8')
 
 def test_showSummary_incorrect_email(client):
-    # Use the first club email for the test
+    # Use the first club email for the test 'test_showSummary_incorrect_email '
     wrong_email = "wrong@example.com"
     response = client.post('/showSummary', data={'email': wrong_email})
     assert response.status_code == 302
