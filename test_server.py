@@ -1,5 +1,5 @@
 import pytest
-from server import app,loadClubs
+from server import app,loadClubs,loadCompetitions
 
 def test_loadClubs():
     # Appel de la fonction
@@ -15,6 +15,23 @@ def test_loadClubs():
     for club in clubs:
         assert "name" in club, f"Expected 'name' in club, got {club}"
         assert "email" in club, f"Expected 'email' in club, got {club}"
+        
+
+def test_loadCompetitions():
+    #  Function call
+    competitions = loadCompetitions()
+
+    # Ensure that the function returns a list
+    assert isinstance(competitions, list), "Expected a list"
+
+    # Ensure that the list is not empty
+    assert len(competitions) > 0, "Expected non-empty list"
+
+    # Test if each element of the list is a dictionary containing the essential keys
+    for competition in competitions:
+        assert "name" in competition, f"Expected 'name' in competition, got {competition}"
+        assert "date" in competition, f"Expected 'date' in competition, got {competition}"
+        assert "numberOfPlaces" in competition, f"Expected 'numberOfPlaces' in competition, got {competition}"
 
 
 
