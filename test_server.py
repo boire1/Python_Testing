@@ -178,3 +178,44 @@ def test_logout(client):
     
     # Check that we are redirected to the homepage
     assert b"Welcome to the GUDLFT Registration Portal!" in response.data    
+    
+#-----------------------------------------------test integration--------------------------------------------------------------------
+
+
+def test_integration_flow(client):
+    # 1. Load clubs and competitions
+    loaded_clubs = loadClubs()
+    loaded_competitions = loadCompetitions()
+
+    assert loaded_clubs is not None
+    assert loaded_competitions is not None
+
+    # 2. Check the index page
+    response = client.get('/')
+    assert b"Welcome to the GUDLFT Registration Portal!" in response.data
+
+    # 3. Submit the form in index to showSummary with a known club email
+    club_email = "john@simplylift.co"
+    response = client.post('/showSummary', data={'email': club_email}, follow_redirects=True)
+    assert b"Welcome," in response.data  # Assuming "Welcome," is in your welcome.html template
+
+    # 4. Book for a known competition and club
+    club_name = "Simply Lift"
+    competition_name = "Spring Festival"
+    response = client.get(f'/book/{competition_name}/{club_name}')
+    assert b"Booking for" in response.data  # Assuming "Booking for" is in your booking.html template
+
+    # 5. Purchase places
+    number_of_places = 3
+    response = client.post('/purchasePlaces', data={
+        'club': club_name,
+        'competition': competition_name,
+        'places': number_of_places
+    })
+    assert b"Great-booking complete!" in response.data
+
+    # 6. Logout
+    response = client.get('/logout', follow_redirects=True)
+    assert b"Welcome to the GUDLFT Registration Portal!" in response.data
+
+    
