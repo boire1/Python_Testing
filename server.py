@@ -46,14 +46,26 @@ def showSummary():
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
-    else:
+def book(competition, club):
+    club_matches = [c for c in clubs if c['name'] == club]
+    competition_matches = [c for c in competitions if c['name'] == competition]
+    club_name = "Simply Lift"
+    competition_name = "Spring Festival"
+    club_matches = [c for c in clubs if c['name'] == club_name]
+    competition_matches = [c for c in competitions if c['name'] == competition_name]
+    print(club_matches, competition_matches)
+
+    # Check if club_matches and competition_matches are not empty.
+    if not club_matches or not competition_matches:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
+
+    # Otherwise, use the corresponding elements.
+    foundClub = club_matches[0]
+    foundCompetition = competition_matches[0]
+    
+    return render_template('booking.html', club=foundClub, competition=foundCompetition)
+
     
 
 @app.route('/purchasePlaces', methods=['POST'])
