@@ -167,3 +167,14 @@ def test_index_page(client):
     assert b'<form action="showSummary" method="post">' in response.data
     assert b'<input type="email" name="email"' in response.data
     assert b'<button type="submit">Enter</button>' in response.data
+    
+#-----------------------------------------------test logout------------------------------------------------------------------------
+    
+def test_logout(client):
+    response = client.get('/logout', follow_redirects=True)
+    
+    # Check that the status code is 302 (redirection)
+    assert response.status_code == 200  # Note: follow_redirects=True will follow the redirect, so the status code will be 200 after following the redirect
+    
+    # Check that we are redirected to the homepage
+    assert b"Welcome to the GUDLFT Registration Portal!" in response.data    
