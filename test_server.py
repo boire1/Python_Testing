@@ -151,3 +151,19 @@ def test_exceed_points_available(client):
     })
 
     assert b'You do not have enough points to book these places.' in response.data
+    
+#-----------------------------------------------Index------------------------------------------------------------------------
+
+def test_index_page(client):
+    response = client.get('/')
+    
+    # Check that the status code is 200
+    assert response.status_code == 200
+    
+    # Check that the title is present
+    assert b"Welcome to the GUDLFT Registration Portal!" in response.data
+    
+    # Check the presence of the form
+    assert b'<form action="showSummary" method="post">' in response.data
+    assert b'<input type="email" name="email"' in response.data
+    assert b'<button type="submit">Enter</button>' in response.data
