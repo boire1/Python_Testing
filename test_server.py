@@ -1,5 +1,5 @@
 import pytest
-from server import app,loadClubs,loadCompetitions
+from server import app,loadClubs,loadCompetitions,competitions,clubs
 
 def test_loadClubs():
     # Appel de la fonction
@@ -89,4 +89,28 @@ def test_book_invalid_competition(client):
     
     response = client.get(f'/book/{club_name}/{competition_name}')
     
-    assert b"Something went wrong-please try again" in response.data    
+    assert b"Something went wrong-please try again" in response.data  
+      
+# ---------------------------------PurchasePlaces--------------------------------------------------------------------
+
+def test_successful_purchase(client):
+    club_name = "Simply Lift"  
+    competition_name = "Spring Festival"  
+    number_of_places = 5
+    
+    initial_places = [comp for comp in competitions if comp['name'] == competition_name][0]['numberOfPlaces']
+    initial_points = [club for club in clubs if club['name'] == club_name][0]['points']
+
+    response = client.post('/purchasePlaces', data={
+        'club': club_name,
+        'competition': competition_name,
+        'places': number_of_places
+    })
+
+    assert b'Great-booking complete!' in response.data
+
+    updated_places = [comp for comp in competitions if comp['name'] == competition_name][0]['numberOfPlaces']
+    updated_points = [club for club in clubs if club['name'] == club_name][0]['points']
+
+    assert int(updated_places) == int(initial_places) - number_of_places
+    assert int(updated_points) == int(initial_points) - number_of_places
