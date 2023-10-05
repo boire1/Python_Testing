@@ -137,6 +137,7 @@ def test_exceed_max_purchase_limit(client):
 
     assert b'You cannot book more than 12 places in one competition.' in response.data
     
+#             _____________________________________________________________________
     
 def test_exceed_points_available(client):
     club_name = "Simply Lift"
