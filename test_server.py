@@ -81,3 +81,12 @@ def test_book_invalid_club(client):
     response = client.get(f'/book/{club_name}/{competition_name}')
     
     assert b"Something went wrong-please try again" in response.data
+    
+
+def test_book_invalid_competition(client):
+    club_name = "Simply Lift"
+    competition_name = "Non Existent Competition"
+    
+    response = client.get(f'/book/{club_name}/{competition_name}')
+    
+    assert b"Something went wrong-please try again" in response.data    
