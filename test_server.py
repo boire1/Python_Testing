@@ -74,3 +74,10 @@ def test_book_valid_club_and_competition(client):
     assert bytes(club_name, 'utf-8') in response.data
     
     
+def test_book_invalid_club(client):
+    club_name = "Non Existent Club"
+    competition_name = "Spring Festival"
+    
+    response = client.get(f'/book/{club_name}/{competition_name}')
+    
+    assert b"Something went wrong-please try again" in response.data

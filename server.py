@@ -49,10 +49,7 @@ def showSummary():
 def book(competition, club):
     club_matches = [c for c in clubs if c['name'] == club]
     competition_matches = [c for c in competitions if c['name'] == competition]
-    club_name = "Simply Lift"
-    competition_name = "Spring Festival"
-    club_matches = [c for c in clubs if c['name'] == club_name]
-    competition_matches = [c for c in competitions if c['name'] == competition_name]
+    
     print(club_matches, competition_matches)
 
     # Check if club_matches and competition_matches are not empty.
