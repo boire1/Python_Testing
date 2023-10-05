@@ -114,3 +114,17 @@ def test_successful_purchase(client):
 
     assert int(updated_places) == int(initial_places) - number_of_places
     assert int(updated_points) == int(initial_points) - number_of_places
+#             _____________________________________________________________________
+
+def test_exceed_max_purchase_limit(client):
+    club_name = "Simply Lift"
+    competition_name = "Spring Festival"
+    number_of_places = 13  # Plus que la limite maximale
+
+    response = client.post('/purchasePlaces', data={
+        'club': club_name,
+        'competition': competition_name,
+        'places': number_of_places
+    })
+
+    assert b'You cannot book more than 12 places in one competition.' in response.data
