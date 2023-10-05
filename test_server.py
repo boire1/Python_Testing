@@ -1,6 +1,14 @@
 import pytest
 from server import app,loadClubs,loadCompetitions,competitions,clubs
 
+@pytest.fixture(autouse=True)
+def reset_data():
+    global clubs, competitions
+    clubs = loadClubs()
+    competitions = loadCompetitions()
+
+
+
 def test_loadClubs():
     # Appel de la fonction
     clubs = loadClubs()
@@ -128,3 +136,17 @@ def test_exceed_max_purchase_limit(client):
     })
 
     assert b'You cannot book more than 12 places in one competition.' in response.data
+    
+    
+def test_exceed_points_available(client):
+    club_name = "Simply Lift"
+    competition_name = "Spring Festival"
+    number_of_places = 10  # set it to more than the club's points but not superior to 12
+
+    response = client.post('/purchasePlaces', data={
+        'club': club_name,
+        'competition': competition_name,
+        'places': number_of_places
+    })
+
+    assert b'You do not have enough points to book these places.' in response.data
