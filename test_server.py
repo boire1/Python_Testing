@@ -59,4 +59,18 @@ def test_showSummary_incorrect_email(client):
     assert "Location" in response.headers
     assert url_for('index') in response.headers["Location"]
 
+def test_book_valid_club_and_competition(client):
+    #  name of a valid club and competition from clubs.json data
+    club_name = "Simply Lift"
+    competition_name = "Spring Festival"
+    
+    response = client.get(f'/book/{club_name}/{competition_name}')
+    
+    assert response.status_code == 200
+    # check that certain key elements are present on the page :
+    assert b'Booking for' in response.data
 
+    assert bytes(competition_name, 'utf-8') in response.data
+    assert bytes(club_name, 'utf-8') in response.data
+    
+    
